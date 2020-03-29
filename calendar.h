@@ -15,15 +15,22 @@ class Calendar : public QCalendarWidget
 public:
     Calendar(QWidget *parent = nullptr);
     ~Calendar();
+
+    void SetHighLightColor(const QColor& color);
+
     QString textStyle;
-    QColor cellColor;
+
     void updateButtonStyle();
 
 protected:
     virtual void paintCell(QPainter *painter, const QRect &rect, const QDate &date) const;
 
 private:
+    void dumpStructure(const QObject *obj, int spaceCount);
+
     QSettings m_settings;
+    QColor m_backgroundColor;
+    QColor m_highLightColor;
 
 };
 

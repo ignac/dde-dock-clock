@@ -18,14 +18,14 @@ CalendarWidget::CalendarWidget(QWidget *parent) : QWidget(parent),
     refreshDateTimer->setInterval(1000);
     refreshDateTimer->start();
 
-    setFixedWidth(319);
+    setFixedWidth(359);
     setFixedHeight(468);
 
     QVBoxLayout *vbox = new QVBoxLayout;
     QStackedLayout *slayout = new QStackedLayout;
 
     currentTime = new QLabel;
-    currentTime->setStyleSheet("QLabel {font-size: 48px;}");
+    currentTime->setStyleSheet("QLabel {font-size: 46px;}");
     currentTime->setFixedHeight(50);
     currentTime->setAlignment(Qt::AlignCenter);
 
@@ -34,7 +34,7 @@ CalendarWidget::CalendarWidget(QWidget *parent) : QWidget(parent),
 
     vbox->addWidget(currentTime, 0, Qt::AlignCenter);
     vbox->addWidget(currentDate, 1, Qt::AlignHCenter | Qt::AlignTop);
-    vbox->addSpacing(22);
+    vbox->addSpacing(20);
 
     calendar = new Calendar;
     datewidget = new DateWidget;
@@ -97,8 +97,8 @@ void CalendarWidget::updateTime()
     const QDateTime dateTime = QDateTime::currentDateTime();
     QString date = dateTime.date().toString(Qt::SystemLocaleLongDate);
     QFont font = qApp->font();
-    if (font.pointSize()  > 13)
-        font.setPointSize(13);
+//    if (font.pointSize()  > 13)
+    font.setPointSize(15);
     setFont(font);
     calendar->setFont(font);
     if (m_settings.value("ShowSeconds").toBool() == false)
@@ -114,7 +114,7 @@ void CalendarWidget::updateDateStyle()
     QList<QColor> colorList = {QColor(244, 67, 54), QColor(233, 30, 99),
          QColor(190, 63, 213), QColor(136, 96, 205), QColor(104, 119, 202),
          QColor(25, 138, 230), QColor(13, 148, 211), QColor(9, 147, 165),
-         QColor(23, 140, 129), QColor(41, 142, 46), QColor(139, 195, 74),
+         QColor(0x42, 0xBD, 0xB5), QColor(41, 142, 46), QColor(139, 195, 74),
          QColor(205, 220, 57), QColor(255, 235, 59), QColor(255, 193, 7),
          QColor(234, 165, 62), QColor(255, 87, 34)};
     QColor themeColor = colorList[intColor];
@@ -136,7 +136,7 @@ void CalendarWidget::updateDateStyle()
     datewidget->closeButton->setStyleSheet(styleSheet.replace("16", "14"));
     datewidget->dateColor = themeColor;
 
-    calendar->cellColor = themeColor;
+    calendar->SetHighLightColor(themeColor);
     calendar->textStyle = styleText;
     calendar->updateButtonStyle();
 

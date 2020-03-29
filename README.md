@@ -24,7 +24,11 @@ Uninstall:
 ```
 
 ### Changes ###
-Ver 1.2 - added lunar phases and zodiac signs (double click to show or hide)
+Cleaned changes I don't need 
+ - 12-hours mode
+ - analog clock
+Fixed time font size
+Fixed color scheme of calendar widget
 
 ### Acknowledgment ###
-This Plugin was initially inspired by [Sonichy's DDE_DOCK_DateTime](https://github.com/sonichy/dde-dock-datetime)
+This is forked from https://github.com/v-svg/dde-dock-clock

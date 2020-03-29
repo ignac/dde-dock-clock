@@ -102,7 +102,7 @@ void DatetimePlugin::setSortKey(const QString &itemKey, const int order)
 
 QWidget *DatetimePlugin::itemWidget(const QString &itemKey)
 {
-    Q_UNUSED(itemKey);
+   Q_UNUSED(itemKey);
 
     return m_centralWidget;
 }
@@ -136,14 +136,6 @@ const QString DatetimePlugin::itemContextMenu(const QString &itemKey)
     open["itemText"] = tr("Open Calendar");
     open["isActive"] = true;
     items.push_back(open);
-
-    if (displayMode == Dock::Fashion && m_settings.value("ShowClock").toBool() == false) {
-        QMap<QString, QVariant> clock;
-        clock["itemId"] = "clock";
-        clock["itemText"] = tr("Analogue Clock");
-        clock["isActive"] = true;
-        items.push_back(clock);
-    }
 
     QMap<QString, QVariant> settings;
     settings["itemId"] = "settings";
@@ -667,11 +659,9 @@ void DatetimePlugin::set()
 
     dialog->setLayout(vbox);
 
-    if (dialog->exec() == QDialog::Accepted) {
-        if (clock->isChecked())
-            m_settings.setValue("ShowClock", true);
-        else
-            m_settings.setValue("ShowClock", false);
+    if (dialog->exec() == QDialog::Accepted)
+    {
+        m_settings.setValue("ShowClock", false);
 
         if (seconds->isChecked())
             m_settings.setValue("ShowSeconds", true);
