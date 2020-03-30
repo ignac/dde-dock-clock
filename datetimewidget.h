@@ -49,13 +49,12 @@ private:
     void paintEvent(QPaintEvent *e);
     const QPixmap loadSvg(const QString &fileName, const QSize size);
 
-    void GetDateTimeFormat(QString &dateFormat, QString &timeFormat) const;
+    void GetDateTimeFormats(QString &dateFormat, QString &timeFormat) const;
+    void GetDateTimeFonts(QFont &dateFont, QFont &timeFont) const;
 
 private:
     QSettings m_settings;
     bool m_24HourFormat;
-    QFont m_TimeFont;
-    QFont m_DateFont;
 };
 
 #endif // DATETIMEWIDGET_H

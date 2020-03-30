@@ -43,8 +43,6 @@ Calendar::Calendar(QWidget *parent) : QCalendarWidget(parent),
                   "QCalendarWidget QAbstractItemView:enabled { background-color: rgba(20,20,20, 80); }"
                   "QToolButton::menu-indicator {image: none;}"
                   "QCalendarWidget QToolButton { font-size: 16px;}");
-
-    dumpStructure(this, 0);
 }
 
 void Calendar::dumpStructure(const QObject *obj, int spaceCount)

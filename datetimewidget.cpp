@@ -33,11 +33,6 @@ DatetimeWidget::DatetimeWidget(QWidget *parent) : QWidget(parent),
       m_settings("deepin", "dde-dock-clock"),
       m_24HourFormat(m_settings.value("24HourFormat", true).toBool())
 {
-    m_TimeFont = qApp->font();
-    m_TimeFont.setPointSize(20);
-
-    m_DateFont = qApp->font();
-    m_DateFont.setPointSize(14);
 }
 
 bool DatetimeWidget::enabled()
@@ -55,13 +50,24 @@ void DatetimeWidget::toggleClock()
     update();
 }
 
-void DatetimeWidget::GetDateTimeFormat(QString &dateFormat, QString &timeFormat) const
+void DatetimeWidget::GetDateTimeFormats(QString &dateFormat, QString &timeFormat) const
 {
     QString format = m_settings.value("Format","HH:mm\nyyyy/M/d ddd").toString().replace("\\n","\n");
 
     QStringList formats = format.split("\n");
     timeFormat = formats[0];
-    dateFormat = formats[1];
+
+    if (formats.count() > 1)
+        dateFormat = formats[1];
+}
+
+void DatetimeWidget::GetDateTimeFonts(QFont &dateFont, QFont &timeFont) const
+{
+    dateFont = qApp->font();
+    dateFont.setPointSize(m_settings.value("DateFontSize", qApp->font().pointSize()).toInt());
+
+    timeFont = qApp->font();
+    timeFont.setPointSize(m_settings.value("ClockFontSize", qApp->font().pointSize()).toInt());
 }
 
 void DatetimeWidget::toggleHourFormat()
@@ -74,23 +80,25 @@ void DatetimeWidget::toggleHourFormat()
 
 QSize DatetimeWidget::sizeHint() const
 {
-    QFontMetrics timeMetrics(m_TimeFont);
-    QFontMetrics dateMetrics(m_DateFont);
+    QFont timeFont, dateFont;
+    this->GetDateTimeFonts(dateFont, timeFont);
+
+    QFontMetrics timeMetrics(timeFont);
+    QFontMetrics dateMetrics(dateFont);
 
     QString timeFormat, dateFormat;
-    this->GetDateTimeFormat(dateFormat, timeFormat);
+    this->GetDateTimeFormats(dateFormat, timeFormat);
 
-    QString format = m_settings.value("Format", "HH:mm\nM/d ddd").toString();
-    if (format.contains("\\n"))
+    if (!dateFormat.isEmpty())
     {
         QRect timeRect = timeMetrics.boundingRect(timeFormat);
         QRect dateRect = dateMetrics.boundingRect(dateFormat);
 
-        return QSize(qMax(timeRect.width(), dateRect.width()) + 10, timeRect.height() * 2);
+        return QSize(qMax(timeRect.width(), dateRect.width()) + 10, timeRect.height() + dateRect.height());
     }
     else
     {
-        return QSize(timeMetrics.boundingRect(format).width(), timeMetrics.boundingRect("8").height() * 2);
+        return QSize(timeMetrics.boundingRect(timeFormat).width(), timeMetrics.boundingRect("8").height());
     }
 }
 
@@ -104,26 +112,30 @@ void DatetimeWidget::paintEvent(QPaintEvent *e)
     Q_UNUSED(e);
 
     const QDateTime current = QDateTime::currentDateTime();
-    QFontMetrics FM(m_TimeFont);
+    QFont timeFont, dateFont;
+    this->GetDateTimeFonts(dateFont, timeFont);
+
+    QFontMetrics timeMetrics(timeFont);
 
     QString timeFormat, dateFormat;
-    this->GetDateTimeFormat(dateFormat, timeFormat);
+    this->GetDateTimeFormats(dateFormat, timeFormat);
+
+
 
     QRect timeRect = rect();
-    timeRect.setHeight(FM.boundingRect("8").height());
+    timeRect.setHeight(timeMetrics.boundingRect("8").height());
 
     QRect dateRect = rect();
-    dateRect.setHeight(dateRect.height() - timeRect.height());
-    dateRect.setY(dateRect.y() + 2*timeRect.height());
+    dateRect.setY(dateRect.y() + timeRect.height());
 
     QPainter painter(this);
     painter.setPen(Qt::white);
     painter.setRenderHint(QPainter::Antialiasing);
 
-    painter.setFont(m_TimeFont);
+    painter.setFont(timeFont);
     painter.drawText(timeRect, Qt::AlignCenter, current.toString(timeFormat));
 
-    painter.setFont(m_DateFont);
+    painter.setFont(dateFont);
     painter.drawText(dateRect, Qt::AlignCenter, current.toString(dateFormat));
 }
 

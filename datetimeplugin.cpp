@@ -29,6 +29,7 @@
 #include <QBoxLayout>
 #include <QFormLayout>
 #include <QFontMetrics>
+#include <QSpinBox>
 
 DatetimePlugin::DatetimePlugin(QObject *parent)
     : QObject(parent),
@@ -135,15 +136,6 @@ const QString DatetimePlugin::itemContextMenu(const QString &itemKey)
     open["isActive"] = true;
     items.push_back(open);
 
-    QMap<QString, QVariant> settings;
-    settings["itemId"] = "settings";
-    if (m_centralWidget->is24HourFormat())
-        settings["itemText"] = tr("12 Hour Time");
-    else
-        settings["itemText"] = tr("24 Hour Time");
-    settings["isActive"] = true;
-    items.push_back(settings);
-
     QMap<QString, QVariant> set;
     set["itemId"] = "set";
     set["itemText"] = tr("Plugin Settings");
@@ -215,6 +207,14 @@ void DatetimePlugin::set()
     label->setTextInteractionFlags(Qt::TextSelectableByMouse);
     label->setAlignment(Qt::AlignCenter);
     layout->addRow(tr("Such as"), label);
+
+    QSpinBox *clockFontSize = new QSpinBox();
+    clockFontSize->setValue(m_settings.value("ClockFontSize", qApp->font().pointSize()).toInt());
+    layout->addRow("Clock Font Size", clockFontSize);
+
+    QSpinBox *dateFontSize = new QSpinBox();
+    dateFontSize->setValue(m_settings.value("DateFontSize", qApp->font().pointSize()).toInt());
+    layout->addRow("Date Font Size", dateFontSize);
 
     group1->setLayout(layout);
     vbox->addWidget(group1);
@@ -658,6 +658,8 @@ void DatetimePlugin::set()
     {
         m_settings.setValue("ShowSeconds", seconds->isChecked());
         m_settings.setValue("FirstDayMonday", firstDay->isChecked());
+        m_settings.setValue("ClockFontSize", clockFontSize->value());
+        m_settings.setValue("DateFontSize", dateFontSize->value());
 
         if (angle180->isChecked())
             m_settings.setValue("Angle", 180);
