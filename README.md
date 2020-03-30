@@ -24,12 +24,10 @@ Uninstall:
 ```
 
 ### Changes ###
-Cleaned changes I don't need 
- - 12-hours mode
- - analog clock
-Fixed time font size
-Fixed color scheme of calendar widget
-Add options to change font/date time size
+- Cleaned changes I don't need (12-hours mode, analog clock)
+- Fixed time font size
+- Fixed color scheme of calendar widget
+- Add options to change font/date time size
 
 ### Acknowledgment ###
 This is forked from https://github.com/v-svg/dde-dock-clock
