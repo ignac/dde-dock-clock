@@ -40,7 +40,7 @@ signals:
     void requestContextMenu() const;
 
 public slots:
-    void toggleHourFormat();
+    void Refresh();
     void toggleClock();
 
 private:

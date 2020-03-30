@@ -136,6 +136,12 @@ const QString DatetimePlugin::itemContextMenu(const QString &itemKey)
     open["isActive"] = true;
     items.push_back(open);
 
+    QMap<QString, QVariant> refresh;
+    refresh["itemId"] = "refresh_widget";
+    refresh["itemText"] = tr("Refresh Widget");
+    refresh["isActive"] = true;
+    items.push_back(refresh);
+
     QMap<QString, QVariant> set;
     set["itemId"] = "set";
     set["itemText"] = tr("Plugin Settings");
@@ -161,14 +167,15 @@ void DatetimePlugin::invokedMenuItem(const QString &itemKey, const QString &menu
     Q_UNUSED(itemKey)
     Q_UNUSED(checked)
 
-    if (menuId == "clock")
-        m_centralWidget->toggleClock();
+    if (menuId == "refresh_widget")
+        m_centralWidget->Refresh();
+
     if (menuId == "set")
         set();
-    if (menuId == "settings")
-        m_centralWidget->toggleHourFormat();
+
     if (menuId == "tset")
         QProcess::startDetached("dbus-send --print-reply --dest=com.deepin.dde.ControlCenter /com/deepin/dde/ControlCenter com.deepin.dde.ControlCenter.ShowModule \"string:datetime\"");
+
     if (menuId == "open")
         openCalendar();
 }

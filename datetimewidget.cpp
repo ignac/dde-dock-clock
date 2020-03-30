@@ -70,10 +70,8 @@ void DatetimeWidget::GetDateTimeFonts(QFont &dateFont, QFont &timeFont) const
     timeFont.setPointSize(m_settings.value("ClockFontSize", qApp->font().pointSize()).toInt());
 }
 
-void DatetimeWidget::toggleHourFormat()
+void DatetimeWidget::Refresh()
 {
-    m_24HourFormat = !m_24HourFormat;
-    m_settings.setValue("24HourFormat", m_24HourFormat);
     update();
     emit requestUpdateGeometry();
 }
