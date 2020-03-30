@@ -86,25 +86,19 @@ void DateWidget::paintEvent(QPaintEvent *event)
     painter.setPen(Qt::NoPen);
 
     int alfa = m_settings.value("SetAlfa", 110).toInt();
-    bool form = m_settings.value("RoundForm", false).toBool();
+
     QColor color = QColor(255, 255, 255);
     color.setAlpha(alfa - 40);
     dateColor.setAlpha(alfa);
-    if (form == true) {
-        if (today == true) {
-            painter.setBrush(color);        
-            painter.drawEllipse(-90, -90, 180, 180);
-        }
-        painter.setBrush(dateColor);            
-        painter.drawEllipse(-105, -105, 210, 210);
-    } else {
-        if (today == true) {
-            painter.setBrush(color);        
-            painter.drawRoundedRect(-80, -80, 160, 160, 14, 14);
-        }
-        painter.setBrush(dateColor);
-        painter.drawRoundedRect(-95, -95, 190, 190, 22, 22);
+
+    if (today == true)
+    {
+        painter.setBrush(color);
+        painter.drawRoundedRect(-80, -80, 160, 160, 14, 14);
     }
+
+    painter.setBrush(dateColor);
+    painter.drawRoundedRect(-95, -95, 190, 190, 22, 22);
 }
 
 void DateWidget::wheelEvent(QWheelEvent *event)

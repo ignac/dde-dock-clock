@@ -78,13 +78,12 @@ private:
     QPointer<QGroupBox> group1;
     QPointer<QGroupBox> group2;
     QPointer<QGroupBox> group3;
-    QPointer<QCheckBox> clock;
     QPointer<QRadioButton> angle180;
     QPointer<QRadioButton> angle90;
     QPointer<QRadioButton> angle0;
     QPointer<QCheckBox> seconds;
-    QPointer<QCheckBox> form;
     QPointer<QCheckBox> weekend;
+    QPointer<QCheckBox> firstDay;
     QPointer<QRadioButton> color0;
     QPointer<QRadioButton> color1;
     QPointer<QRadioButton> color2;

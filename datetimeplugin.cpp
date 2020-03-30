@@ -126,8 +126,6 @@ const QString DatetimePlugin::itemContextMenu(const QString &itemKey)
 {
     Q_UNUSED(itemKey);
 
-    const Dock::DisplayMode displayMode = qApp->property(PROP_DISPLAY_MODE).value<Dock::DisplayMode>();
-
     QList<QVariant> items;
     items.reserve(4);
 
@@ -208,10 +206,6 @@ void DatetimePlugin::set()
 
     group1 = new QGroupBox(tr("Plugin options"));
 
-    clock = new QCheckBox(tr("Analogue Clock"));
-    clock->setChecked(m_settings.value("ShowClock").toBool());
-    layout->addRow(clock);
-
     QLineEdit *lineEdit_format = new QLineEdit;
     lineEdit_format->setPlaceholderText(tr("Default if empty"));
     lineEdit_format->setText(m_settings.value("Format", tr("HH:mm\\nMM/dd ddd")).toString());
@@ -228,6 +222,10 @@ void DatetimePlugin::set()
     group2 = new QGroupBox(tr("Calendar options"));
 
     layout = new QFormLayout;
+    firstDay = new QCheckBox(tr("Monday is first day of week"));
+    firstDay->setChecked(m_settings.value("FirstDayMonday", true).toBool());
+    layout->addRow(firstDay);
+
     seconds = new QCheckBox(tr("Show seconds"));
     seconds->setChecked(m_settings.value("ShowSeconds").toBool());
     layout->addRow(seconds);
@@ -273,9 +271,6 @@ void DatetimePlugin::set()
     group3 = new QGroupBox(tr("Calendar Theme"));
 
     layout = new QFormLayout;
-    form = new QCheckBox(tr("Round selection"));
-    form->setChecked(m_settings.value("RoundForm").toBool());
-    layout->addRow(form);
 
     weekend = new QCheckBox(tr("Color weekend"));
     weekend->setChecked(m_settings.value("ColorWeekend", true).toBool());
@@ -661,12 +656,8 @@ void DatetimePlugin::set()
 
     if (dialog->exec() == QDialog::Accepted)
     {
-        m_settings.setValue("ShowClock", false);
-
-        if (seconds->isChecked())
-            m_settings.setValue("ShowSeconds", true);
-        else
-            m_settings.setValue("ShowSeconds", false);
+        m_settings.setValue("ShowSeconds", seconds->isChecked());
+        m_settings.setValue("FirstDayMonday", firstDay->isChecked());
 
         if (angle180->isChecked())
             m_settings.setValue("Angle", 180);
@@ -674,11 +665,6 @@ void DatetimePlugin::set()
             m_settings.setValue("Angle", 90);
         if (angle0->isChecked())
             m_settings.setValue("Angle", 0);
-
-        if (form->isChecked())
-            m_settings.setValue("RoundForm", true);
-        else
-            m_settings.setValue("RoundForm", false);
 
         if (weekend->isChecked())
             m_settings.setValue("ColorWeekend", true);

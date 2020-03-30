@@ -21,9 +21,7 @@ Calendar::Calendar(QWidget *parent) : QCalendarWidget(parent),
         table->verticalHeader()->setSectionResizeMode(QHeaderView::Fixed);
         table->verticalHeader()->setDefaultSectionSize(40);
         table->setStyleSheet("QTableView {selection-background-color: transparent;}"
-                             "QTableView {alternate-background-color: transparent;}"
-                             );
-
+                             "QTableView {alternate-background-color: transparent;}");
     }
 
     QToolButton *year = findChild<QToolButton *>("qt_calendar_yearbutton");
@@ -39,8 +37,6 @@ Calendar::Calendar(QWidget *parent) : QCalendarWidget(parent),
         month->setEnabled(false);
         month->setStyleSheet("QToolButton {color: white}");
     }
-
-    this->setFirstDayOfWeek(Qt::Monday);
 
     setStyleSheet("#qt_calendar_navigationbar { background-color: rgba(20,20,20, 80); }"
                   "QCalendarWidget { background-color: rgba(20,20,20, 80); }"
@@ -94,6 +90,15 @@ void Calendar::updateButtonStyle()
         nextmonth->setText("🡢");
         nextmonth->setStyleSheet(textStyle);
         nextmonth->setCursor(Qt::PointingHandCursor);
+    }
+
+    if (m_settings.value("FirstDayMonday", true).toBool())
+    {
+        this->setFirstDayOfWeek(Qt::Monday);
+    }
+    else
+    {
+        this->setFirstDayOfWeek(Qt::Sunday);
     }
 }
 
